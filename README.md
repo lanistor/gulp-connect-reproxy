@@ -1,5 +1,5 @@
 # gulp-connect-reproxy
-A simple proxy middleware for gulp-connect
+A simple proxy middleware for gulp-connect, it can start reverse proxy server with gulp-connect, and it supports Regular Expression.
 
 # How to use
 ```javascript
