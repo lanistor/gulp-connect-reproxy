@@ -61,7 +61,6 @@ function Proxy (options) {
                     if (pathExists) {
                         next();
                     } else {
-                        console.log("11111")
                         var proxyFlag = false;
                         for(var ind=0; ind<config.rule.length; ind++){
                             if(config.rule[ind].test(localRequest.url)){
@@ -69,10 +68,8 @@ function Proxy (options) {
                                 break;
                             }
                         }
-                        console.log("22222:"+proxyFlag)
                         if(proxyFlag){                            
                             localRequest.url = config.server + localRequest.url;
-                            console.log("333333:" + localRequest.url)
                             proxyRequest(localRequest, localResponse, next);                            
                         }else{
                             return next();

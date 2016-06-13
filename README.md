@@ -4,6 +4,10 @@ A simple proxy middleware for gulp-connect, it can start reverse proxy server wi
 # How to use
 ```javascript
 
+var gulp = require("gulp");
+var connect = require("gulp-connect");
+var Reproxy = require("gulp-connect-reproxy");
+
 gulp.task('connect', function () {
     connect.server({
         root: "build",
@@ -11,8 +15,6 @@ gulp.task('connect', function () {
         livereload: true,
 
         middleware: function (connect, options) {
-
-            var Reproxy = require('gulp-connect-reproxy');
 
             options.rule = [/.do/, /.jsp/, /.htm/];
 //or        options.rule = /.do/;
@@ -28,15 +30,15 @@ gulp.task('connect', function () {
 ```
 
 
-## Notes:
+# Notes
 ```
 @ options.rule
-    • Array or String of Regular Expression
+    The rule to proxy, it is an array or a string of Regular Expression
 @ options.server
-    • a server host name to proxy
+    a server host name to proxy, contains the host and port
 ```
 
-## Example
+# Example
 
 If we config it like this
 ```
@@ -51,6 +53,6 @@ but when we requrest "http://127.0.0.1:9000/user/user.js",<br/>
     it will not work.
 
 
-## User
+# User
 Name : Bin Zhang<br/>
 From : Beijing China
