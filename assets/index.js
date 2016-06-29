@@ -6,21 +6,39 @@ var extend = require('extend');
 
 
 function proxyRequest (localRequest, localResponse, next) {
+    
     var options = url.parse('http://' + localRequest.url);
 
-    http.request(options, function (remoteRequest) {
-        if (remoteRequest.statusCode === 200) {
+    extend(options, {
+        method : localRequest.method,
+        headers : localRequest.headers
+    });
+
+    var newHttp = http.request(options, function (remoteResponse) {
+        if (remoteResponse.statusCode === 200) {
             localResponse.writeHead(200, {
-                'Content-Type': remoteRequest.headers['content-type']
+                'Content-Type': remoteResponse.headers['content-type']
             });
-            remoteRequest.pipe(localResponse);
+            remoteResponse.pipe(localResponse);
         } else {
-            localResponse.writeHead(remoteRequest.statusCode);
+            localResponse.writeHead(remoteResponse.statusCode);
             localResponse.end();
         }
-    }).on('error', function(e) {
+    });
+
+
+    if (/POST|PUT/i.test(localRequest.method)) {
+        localRequest.pipe(newHttp);
+    } else {
+        newHttp.end();
+    }
+    newHttp.on('error', function (err) {
+        // localResponse.end(err.stack);
         next();
-    }).end();
+    }).setTimeout(10000,function(err){
+        // localResponse.end();
+        next();
+    });
 };
 
 function Proxy (options) {
@@ -30,6 +48,7 @@ function Proxy (options) {
     }, options);
 
     return function (localRequest, localResponse, next) {
+
         if (typeof config.root === 'string') {
             config.root = [config.root]
         } else if (!Array.isArray(config.root)) {
@@ -62,8 +81,10 @@ function Proxy (options) {
                         next();
                     } else {
                         var proxyFlag = false;
+                        var url = localRequest.url.indexOf("?")>0? localRequest.url.substring(0, localRequest.url.indexOf("?")) : localRequest.url;
+                        
                         for(var ind=0; ind<config.rule.length; ind++){
-                            if(config.rule[ind].test(localRequest.url)){
+                            if(config.rule[ind].test(url)){
                                 proxyFlag = true;
                                 break;
                             }

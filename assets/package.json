@@ -1,6 +1,6 @@
 {
     "name": "gulp-connect-reproxy",
-    "version": "0.0.83",
+    "version": "0.0.91",
     "description": "A simple proxy middleware for gulp-connect, it can start reverse proxy server with gulp-connect, and it supports Regular Expression.",
     "main": "./index.js",
     "scripts": {

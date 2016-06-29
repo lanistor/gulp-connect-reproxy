@@ -21,8 +21,8 @@ gulp.task('connect', function () {
 
         middleware: function (connect, options) {
 
-            options.rule = [/.do/, /.jsp/, /.htm/];
-//or        options.rule = /.do/;
+            options.rule = [/\.do/, /\.jsp/, /\.htm/];
+//or        options.rule = /\.do/;
 
             options.server = "127.0.0.1:8081";
 
