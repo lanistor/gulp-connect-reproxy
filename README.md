@@ -48,7 +48,7 @@ gulp.task('connect', function () {
 If we config it like this
 ```
     @options : {
-        rule : /.do/,
+        rule : /\.do/,
         server : "127.0.0.1:8081"
     }
 ```
